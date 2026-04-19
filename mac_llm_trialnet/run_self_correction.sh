@@ -18,9 +18,12 @@ echo "=============================="
 echo " TrialNet Self-Correction Loop"
 echo "=============================="
 
+# Snapshot adapter list BEFORE training so we can detect if a new one appears
+BEFORE=$(ls -d mac_trialnet_v*_adapter 2>/dev/null | sort -V | tail -1)
+
 echo ""
 echo "[1/3] Running self-correction fine-tune..."
-python3 3_mac_self_correct.py --iters "$ITERS"
+../.venv/bin/python 3_mac_self_correct.py --iters "$ITERS"
 
 echo ""
 echo "[2/3] Finding latest adapter for eval..."
@@ -32,8 +35,16 @@ if [ -z "$LATEST" ]; then
     exit 1
 fi
 
+# Only evaluate & recommend if a *new* adapter was actually created
+if [ "$LATEST" == "$BEFORE" ]; then
+    echo "  No new adapter was created (not enough mistakes yet)."
+    echo "  Your current adapter is: $LATEST"
+    echo "  Keep chatting and logging mistakes with /correct, then run this again."
+    exit 0
+fi
+
 echo "       Evaluating: $LATEST"
-python3 evaluate_mac.py --adapter "./$LATEST"
+../.venv/bin/python evaluate_mac.py --adapter "./$LATEST"
 
 echo ""
 echo "[3/3] Comparing versions..."
@@ -41,7 +52,7 @@ if [ "$LATEST" != "$PREV" ] && [ -n "$PREV" ]; then
     LATEST_NAME=$(basename "$LATEST")
     PREV_NAME=$(basename "$PREV")
     if [ -f "eval_results/${PREV_NAME}.json" ]; then
-        python3 evaluate_mac.py --compare "$PREV_NAME" "$LATEST_NAME"
+        ../.venv/bin/python evaluate_mac.py --compare "$PREV_NAME" "$LATEST_NAME"
     else
         echo "No previous eval baseline for $PREV_NAME. Run evaluate_mac.py --adapter ./$PREV first."
     fi
@@ -50,4 +61,6 @@ else
 fi
 
 echo ""
-echo "Done. Update ADAPTER_DIR in 2_mac_chatbot.py to './$LATEST'"
+echo "✅ Done. New adapter created: $LATEST"
+echo "   Update ADAPTER_DIR in 2_mac_chatbot.py to './$LATEST' to use it."
+

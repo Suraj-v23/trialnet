@@ -77,7 +77,7 @@ def auto_log_if_bad(
     Returns the judgment dict, or None if judging was skipped.
     """
     verdict = judge_response(question, response, model, tokenizer)
-    if verdict["score"] <= threshold_bad:
+    if verdict.get("is_bad") and verdict["score"] <= threshold_bad:
         memory_bank.add_mistake(
             prompt=question,
             bad_generation=response,

@@ -1,0 +1,84 @@
+# ===========================================================
+# TrialNet — .gitignore
+# ===========================================================
+
+# ── Python ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+.installed.cfg
+MANIFEST
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# ── Virtual Environments ────────────────────────────────────
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ── Jupyter ─────────────────────────────────────────────────
+.ipynb_checkpoints
+
+# ── macOS ───────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ── Model Adapters & Weights (too large for GitHub) ─────────
+mac_llm_trialnet/mac_trialnet_v*_adapter/
+mac_llm_trialnet/eval_results/
+saved_models/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# ── ChromaDB Memory & Training Data ─────────────────────────
+mac_llm_trialnet/memory/chroma_store/
+mac_llm_trialnet/memory/__pycache__/
+mac_llm_trialnet/mac_mistakes_memory.jsonl
+mac_llm_trialnet/mac_correction_data/
+mac_llm_trialnet/mac_data/
+
+# ── Graphify Knowledge Graph (auto-generated) ───────────────
+graphify-out/cache/
+graphify-out/.graphify_*
+graphify-out/graph.json
+graphify-out/graph.html
+
+# ── Agent / Tool Internal Files ─────────────────────────────
+.agent/
+
+# ── Secrets & Credentials ───────────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+secrets.json
+
+# ── Logs ────────────────────────────────────────────────────
+*.log
+logs/

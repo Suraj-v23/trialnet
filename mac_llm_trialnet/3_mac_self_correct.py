@@ -20,14 +20,18 @@ from memory.chroma_bank import ChromaMemoryBank
 MODEL_ID       = "Qwen/Qwen2.5-1.5B-Instruct"
 ADAPTERS_ROOT  = "."
 CORRECTION_DIR = "./mac_correction_data"
-MIN_MISTAKES   = 5   # don't run if fewer than this
+MIN_MISTAKES   = 10   # v2 broke from 1 example — need 10+ for meaningful SFT
+# v2 was a regression (overfit on single example). Auto-detect skips it as source.
+SKIP_ADAPTERS  = {"mac_trialnet_v2_smarter_adapter"}  # known bad adapters
 
 
 def find_latest_adapter() -> tuple[str, int]:
-    """Find highest-versioned adapter directory."""
+    """Find highest-versioned non-bad adapter directory."""
     pattern = re.compile(r"mac_trialnet_v(\d+)")
     best_v, best_dir = 0, None
     for name in os.listdir(ADAPTERS_ROOT):
+        if name in SKIP_ADAPTERS:
+            continue
         m = pattern.match(name)
         if m and os.path.isdir(os.path.join(ADAPTERS_ROOT, name)):
             v = int(m.group(1))
@@ -109,7 +113,7 @@ def main():
         "--data",                CORRECTION_DIR,
         "--iters",               str(args.iters),
         "--batch-size",          "1",
-        "--learning-rate",       "1e-5",
+        "--learning-rate",       "2e-6",   # gentle — prevents catastrophic forgetting on small sets
         "--resume-adapter-file", f"{from_dir}/adapters.safetensors",
         "--adapter-path",        to_dir,
         "--max-seq-length",      "1024",
