@@ -212,6 +212,22 @@ You (user) ──► Chat ──► LLM Response
 
 ---
 
+## 🕸️ Knowledge Graph (Graphify)
+
+This project uses [Graphify](https://github.com/safishamsi/graphify) 
+for AI-assisted code understanding.
+
+To generate the knowledge graph locally:
+
+```bash
+pip install graphify
+graphify .
+```
+
+Then open `graphify-out/graph.html` to explore the codebase visually.
+
+---
+
 ## 🗺️ Roadmap
 
 See [ROADMAP.md](ROADMAP.md) for planned features including DPO training, GRPO alignment, and multimodal capabilities.
