@@ -1,0 +1,10 @@
+# Requirements for Native local Apple Silicon LLM Execution
+mlx>=0.19.0
+mlx-lm>=0.19.0
+datasets>=2.19.0
+flask>=3.0.0
+# Phase 1 — RAG Error Memory Bank
+chromadb>=0.5.0
+# Phase 2 — LLM-as-Judge (no extra deps, uses mlx_lm)
+# Phase 4 — Eval baseline
+tqdm>=4.66.0

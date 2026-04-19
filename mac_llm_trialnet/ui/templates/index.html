@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrialNet • Continuous Learning AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --user-bubble: #2563eb;
+            --ai-bubble: rgba(30, 41, 59, 0.8);
+            --danger: #f43f5e;
+            --success: #10b981;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top left, #1e293b, var(--bg-color));
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Glassmorphism App Container */
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            height: 90vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        /* Chat Area */
+        .chat-container {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .message-wrapper {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+        }
+
+        .user-message {
+            align-self: flex-end;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+        }
+
+        .bubble {
+            padding: 14px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .user-message .bubble {
+            background-color: var(--user-bubble);
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai-message .bubble {
+            background-color: var(--ai-bubble);
+            border: 1px solid var(--glass-border);
+            border-bottom-left-radius: 4px;
+        }
+
+        /* Formatting the `<thinking>` blocks */
+        .thinking-block {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--accent);
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        /* Correction UI */
+        .correction-toolbar {
+            margin-top: 8px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .message-wrapper:hover .correction-toolbar {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-correct {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-correct:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px 30px;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(15, 23, 42, 0.5);
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent);
+        }
+
+        .send-btn {
+            background: var(--accent);
+            color: var(--bg-color);
+            border: none;
+            padding: 0 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .send-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 10px 0;
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Modal for specific correction */
+        .correction-modal {
+            display: none;
+            position: absolute;
+            bottom: 90px;
+            left: 5%;
+            right: 5%;
+            background: var(--bg-color);
+            border: 1px solid var(--danger);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+
+        .modal-header {
+            font-weight: 600;
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+
+        .correction-textarea {
+            width: 100%;
+            height: 120px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            resize: none;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: white;
+            border: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-submit-correction {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            <div class="logo">
+                🧠 TrialNet 
+                <span style="font-weight: 300; font-size: 0.9rem; color: var(--text-muted);">v2.0 (Apple MLX)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem;">
+                <div class="status-dot"></div> Memory Engine Active
+            </div>
+        </div>
+
+        <div class="chat-container" id="chatBox">
+            <!-- Messages go here -->
+            <div class="message-wrapper ai-message">
+                <div class="bubble">Hello! I am TrialNet. I am running natively on your Mac GPU. If I hallucinate or make a logic error, hover over my message and click 'Report Mistake' to log a correction!</div>
+            </div>
+        </div>
+
+        <!-- Correction Modal (Hidden by Default) -->
+        <div class="correction-modal" id="correctionModal">
+            <div class="modal-header">Log Human Correction to Memory Bank</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                You are correcting the AI's response to: <strong id="modalPromptText" style="color: white;">[Prompt]</strong>
+            </div>
+            <textarea class="correction-textarea" id="correctionInput" placeholder="Type the correct chain of thought or answer here. Use <thinking> blocks if necessary to teach it logic!"></textarea>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-submit-correction" onclick="submitCorrection()">Lock into Try-and-Learn Bank</button>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" class="chat-input" id="userInput" placeholder="Ask a complex logic puzzle..." autocomplete="off">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const userInput = document.getElementById('userInput');
+        const correctionModal = document.getElementById('correctionModal');
+        const correctionInput = document.getElementById('correctionInput');
+        const modalPromptText = document.getElementById('modalPromptText');
+        
+        // State management for corrections
+        let currentCorrectionContext = {
+            prompt: "",
+            bad_generation: ""
+        };
+
+        // Format <thinking> blocks natively in HTML
+        function formatAIResponse(text) {
+            // Escape HTML first to prevent XSS
+            let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            
+            // Re-format the thinking blocks
+            safeText = safeText.replace(/&lt;thinking&gt;/g, '<div class="thinking-block">');
+            safeText = safeText.replace(/&lt;\/thinking&gt;/g, '</div>');
+            
+            return safeText;
+        }
+
+        function appendMessage(role, text, promptContext = null) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `message-wrapper ${role}-message`;
+            
+            let bubbleContent = role === 'ai' ? formatAIResponse(text) : text;
+            
+            wrapper.innerHTML = `<div class="bubble">${bubbleContent}</div>`;
+            
+            // Add the Correction Toolbar to AI messages
+            if (role === 'ai' && promptContext) {
+                const toolbar = document.createElement('div');
+                toolbar.className = 'correction-toolbar';
+                
+                const correctBtn = document.createElement('button');
+                correctBtn.className = 'btn-correct';
+                correctBtn.innerHTML = '⚠️ Report Mistake';
+                correctBtn.onclick = () => openCorrectionModal(promptContext, text);
+                
+                toolbar.appendChild(correctBtn);
+                wrapper.appendChild(toolbar);
+            }
+            
+            chatBox.appendChild(wrapper);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'message-wrapper ai-message typing-wrap';
+            wrapper.id = 'typingIndicator';
+            wrapper.innerHTML = `
+                <div class="bubble" style="background: transparent; padding: 5px;">
+                    <div class="typing-indicator">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            `;
+            chatBox.appendChild(wrapper);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('typingIndicator');
+            if (el) el.remove();
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+            
+            appendMessage('user', text);
+            userInput.value = '';
+            
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ prompt: text })
+                });
+                
+                const data = await response.json();
+                removeTypingIndicator();
+                
+                if (data.response) {
+                    // Pass the original text and the response so it can be corrected!
+                    appendMessage('ai', data.response, text);
+                } else {
+                    appendMessage('ai', '⚠️ Error generating response.');
+                }
+            } catch (err) {
+                removeTypingIndicator();
+                appendMessage('ai', '⚠️ Server connection failed.');
+            }
+        }
+
+        // Allow 'Enter' key to send
+        userInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Modal Logic
+        function openCorrectionModal(prompt, bad_generation) {
+            currentCorrectionContext = { prompt, bad_generation };
+            modalPromptText.textContent = prompt.length > 50 ? prompt.substring(0, 50) + '...' : prompt;
+            correctionInput.value = '';
+            correctionModal.style.display = 'block';
+            correctionInput.focus();
+        }
+
+        function closeModal() {
+            correctionModal.style.display = 'none';
+        }
+
+        async function submitCorrection() {
+            const human_correction = correctionInput.value.trim();
+            if (!human_correction) {
+                alert("Please provide a correction before submitting.");
+                return;
+            }
+            
+            const payload = {
+                prompt: currentCorrectionContext.prompt,
+                bad_generation: currentCorrectionContext.bad_generation,
+                human_correction: human_correction
+            };
+            
+            try {
+                const res = await fetch('/correct', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                
+                if(res.ok) {
+                    closeModal();
+                    // Give visual feedback in the chat
+                    const wrapper = document.createElement('div');
+                    wrapper.style.alignSelf = 'center';
+                    wrapper.style.fontSize = '0.8rem';
+                    wrapper.style.color = 'var(--danger)';
+                    wrapper.style.margin = '10px 0';
+                    wrapper.innerHTML = '✅ Correction securely locked to mac_mistakes_memory.jsonl';
+                    chatBox.appendChild(wrapper);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                } else {
+                    alert("Failed to save correction.");
+                }
+            } catch (err) {
+                alert("Server error processing correction.");
+            }
+        }
+    </script>
+</body>
+</html>

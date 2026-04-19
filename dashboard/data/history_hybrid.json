@@ -1,0 +1,707 @@
+{
+  "train_loss": [
+    1.6334333681364488,
+    1.5233300232227394,
+    1.520618787730105,
+    1.5275752506624083,
+    1.530899408286462,
+    1.5319579441442628,
+    1.5347623889622821,
+    1.5411110496826725,
+    1.5448077581517423,
+    1.545691158450508,
+    1.5493079260463318,
+    1.5507317859643117,
+    1.5548436323117294,
+    1.557233598250302,
+    1.5661569891192948
+  ],
+  "train_accuracy": [
+    0.8354463226571768,
+    0.9399095492289442,
+    0.9419669335705813,
+    0.9338671411625148,
+    0.929733837485172,
+    0.9290665776986952,
+    0.9262307236061684,
+    0.9198546856465006,
+    0.915980871886121,
+    0.9150911921708185,
+    0.9115324733096085,
+    0.910086743772242,
+    0.9062314650059312,
+    0.903729240806643,
+    0.8945173487544484
+  ],
+  "val_loss": [
+    1.5322270969947476,
+    1.5095965015338788,
+    1.5090563318220394,
+    1.5160531056895865,
+    1.5138454312128706,
+    1.5161643038814079,
+    1.5280225158203902,
+    1.5251009650484708,
+    1.5195291255362138,
+    1.5333598319846575,
+    1.521346128763495,
+    1.5233861609285164,
+    1.5274004232685,
+    1.5265385398934705,
+    1.5269081785580305
+  ],
+  "val_accuracy": [
+    0.93,
+    0.9511666666666667,
+    0.9531666666666667,
+    0.9453333333333334,
+    0.947,
+    0.9451666666666667,
+    0.9328333333333333,
+    0.936,
+    0.9411666666666667,
+    0.9278333333333333,
+    0.9393333333333334,
+    0.9371666666666667,
+    0.9335,
+    0.9341666666666667,
+    0.9338333333333333
+  ],
+  "learning_rate": [
+    0.0005,
+    0.001,
+    0.001001,
+    0.0009240769230769232,
+    0.0008471538461538462,
+    0.0007702307692307693,
+    0.0006933076923076923,
+    0.0006163846153846154,
+    0.0005394615384615385,
+    0.0004625384615384616,
+    0.00038561538461538464,
+    0.00030869230769230773,
+    0.00023176923076923073,
+    0.00015484615384615385,
+    7.792307692307687e-05
+  ],
+  "trial_metrics": [
+    {
+      "step": 0,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 0,
+        "total_seen": 0,
+        "total_corrected": 0
+      },
+      "exploration": {
+        "total_trials": 0,
+        "successful_trials": 0,
+        "success_rate": 0.0,
+        "current_scale": 0.001,
+        "avg_improvement": 0.0,
+        "total_improvement": 0.0
+      },
+      "trend": {
+        "trend": "insufficient_data"
+      },
+      "latest_report": null
+    },
+    {
+      "step": 0,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 0,
+        "total_seen": 0,
+        "total_corrected": 0
+      },
+      "exploration": {
+        "total_trials": 0,
+        "successful_trials": 0,
+        "success_rate": 0.0,
+        "current_scale": 0.001,
+        "avg_improvement": 0.0,
+        "total_improvement": 0.0
+      },
+      "trend": {
+        "trend": "insufficient_data"
+      },
+      "latest_report": null
+    },
+    {
+      "step": 0,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 0,
+        "total_seen": 0,
+        "total_corrected": 0
+      },
+      "exploration": {
+        "total_trials": 0,
+        "successful_trials": 0,
+        "success_rate": 0.0,
+        "current_scale": 0.001,
+        "avg_improvement": 0.0,
+        "total_improvement": 0.0
+      },
+      "trend": {
+        "trend": "insufficient_data"
+      },
+      "latest_report": null
+    },
+    {
+      "step": 843,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 3568,
+        "total_corrected": 1551,
+        "correction_rate": 0.4346973094170404,
+        "avg_priority": 3.3498328403180637,
+        "max_priority": 9.755308162999793,
+        "avg_confidence": 0.9202400870425691,
+        "avg_loss": 2.4117598512373606,
+        "num_confusion_pairs": 87,
+        "uncorrected_count": 1973,
+        "corrected_count": 27
+      },
+      "exploration": {
+        "total_trials": 24,
+        "successful_trials": 5,
+        "success_rate": 0.20833333333333334,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.04996093438228938,
+        "total_improvement": 0.39968747505831503
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": 0.006830678966147863,
+        "pattern_change": 0,
+        "current_severity": 0.46348073081576413
+      },
+      "latest_report": {
+        "severity": 0.46348073081576413,
+        "patterns": 7,
+        "hardest_classes": [
+          9,
+          3,
+          8,
+          5,
+          2
+        ]
+      }
+    },
+    {
+      "step": 1686,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 7359,
+        "total_corrected": 3257,
+        "correction_rate": 0.4425873080581601,
+        "avg_priority": 3.5539283533994417,
+        "max_priority": 7.236952264841748,
+        "avg_confidence": 0.9485358089328076,
+        "avg_loss": 2.4277292325747477,
+        "num_confusion_pairs": 86,
+        "uncorrected_count": 1982,
+        "corrected_count": 18
+      },
+      "exploration": {
+        "total_trials": 48,
+        "successful_trials": 12,
+        "success_rate": 0.25,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.061191162007581984,
+        "total_improvement": 0.9790585921213117
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": -0.03166683003009729,
+        "pattern_change": 0,
+        "current_severity": 0.4419521151248537
+      },
+      "latest_report": {
+        "severity": 0.4419521151248537,
+        "patterns": 7,
+        "hardest_classes": [
+          3,
+          9,
+          8,
+          5,
+          2
+        ]
+      }
+    },
+    {
+      "step": 2529,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 11186,
+        "total_corrected": 4913,
+        "correction_rate": 0.439209726443769,
+        "avg_priority": 3.6787308954489872,
+        "max_priority": 9.724837277641527,
+        "avg_confidence": 0.9609202924545769,
+        "avg_loss": 2.433878381208744,
+        "num_confusion_pairs": 86,
+        "uncorrected_count": 2000,
+        "corrected_count": 0
+      },
+      "exploration": {
+        "total_trials": 75,
+        "successful_trials": 27,
+        "success_rate": 0.36,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.08318507658744799,
+        "total_improvement": 2.0796269146862
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": 0.006788935518381556,
+        "pattern_change": 0,
+        "current_severity": 0.47212412524039615
+      },
+      "latest_report": {
+        "severity": 0.47212412524039615,
+        "patterns": 7,
+        "hardest_classes": [
+          9,
+          8,
+          3,
+          5,
+          7
+        ]
+      }
+    },
+    {
+      "step": 3372,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 15166,
+        "total_corrected": 6657,
+        "correction_rate": 0.43894237109323486,
+        "avg_priority": 3.707673719235971,
+        "max_priority": 9.565329786694877,
+        "avg_confidence": 0.9657611360577982,
+        "avg_loss": 2.438429701156393,
+        "num_confusion_pairs": 88,
+        "uncorrected_count": 2000,
+        "corrected_count": 0
+      },
+      "exploration": {
+        "total_trials": 99,
+        "successful_trials": 36,
+        "success_rate": 0.36363636363636365,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.08491198222570678,
+        "total_improvement": 2.802095413448324
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": -0.00655506443576942,
+        "pattern_change": 0,
+        "current_severity": 0.4608735305197478
+      },
+      "latest_report": {
+        "severity": 0.4608735305197478,
+        "patterns": 7,
+        "hardest_classes": [
+          3,
+          8,
+          9,
+          2,
+          5
+        ]
+      }
+    },
+    {
+      "step": 4215,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 19490,
+        "total_corrected": 8383,
+        "correction_rate": 0.43011800923550536,
+        "avg_priority": 3.809826298363362,
+        "max_priority": 9.373751033770876,
+        "avg_confidence": 0.975299770958621,
+        "avg_loss": 2.4439577505921863,
+        "num_confusion_pairs": 87,
+        "uncorrected_count": 2000,
+        "corrected_count": 0
+      },
+      "exploration": {
+        "total_trials": 126,
+        "successful_trials": 48,
+        "success_rate": 0.38095238095238093,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.0858286355100662,
+        "total_improvement": 3.60480269142278
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": -0.03128517539162223,
+        "pattern_change": 0,
+        "current_severity": 0.5017867480850289
+      },
+      "latest_report": {
+        "severity": 0.5017867480850289,
+        "patterns": 7,
+        "hardest_classes": [
+          3,
+          9,
+          8,
+          5,
+          2
+        ]
+      }
+    },
+    {
+      "step": 5058,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 24023,
+        "total_corrected": 10090,
+        "correction_rate": 0.420014153103276,
+        "avg_priority": 3.8506529090606407,
+        "max_priority": 9.759870232764627,
+        "avg_confidence": 0.9792688492611108,
+        "avg_loss": 2.447516580507703,
+        "num_confusion_pairs": 85,
+        "uncorrected_count": 2000,
+        "corrected_count": 0
+      },
+      "exploration": {
+        "total_trials": 150,
+        "successful_trials": 59,
+        "success_rate": 0.3933333333333333,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.08406603088614835,
+        "total_improvement": 4.2033015443074175
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": 0.031243147646849767,
+        "pattern_change": 0,
+        "current_severity": 0.49716651627994457
+      },
+      "latest_report": {
+        "severity": 0.49716651627994457,
+        "patterns": 7,
+        "hardest_classes": [
+          3,
+          8,
+          9,
+          5,
+          4
+        ]
+      }
+    },
+    {
+      "step": 5901,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 1970,
+        "total_seen": 28604,
+        "total_corrected": 11853,
+        "correction_rate": 0.41438260383163195,
+        "avg_priority": 3.8157177894372336,
+        "max_priority": 9.185698742041373,
+        "avg_confidence": 0.9817782868918381,
+        "avg_loss": 2.4490659711454965,
+        "num_confusion_pairs": 87,
+        "uncorrected_count": 1969,
+        "corrected_count": 1
+      },
+      "exploration": {
+        "total_trials": 177,
+        "successful_trials": 69,
+        "success_rate": 0.3898305084745763,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.08123654105539971,
+        "total_improvement": 4.7929559222685825
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": 0.00648988919455068,
+        "pattern_change": 0,
+        "current_severity": 0.4852755454743812
+      },
+      "latest_report": {
+        "severity": 0.4852755454743812,
+        "patterns": 7,
+        "hardest_classes": [
+          3,
+          8,
+          9,
+          2,
+          5
+        ]
+      }
+    },
+    {
+      "step": 6744,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 33377,
+        "total_corrected": 13579,
+        "correction_rate": 0.40683704347305033,
+        "avg_priority": 3.858205937266086,
+        "max_priority": 8.96851271184725,
+        "avg_confidence": 0.9830804304034214,
+        "avg_loss": 2.4503043445859207,
+        "num_confusion_pairs": 85,
+        "uncorrected_count": 1981,
+        "corrected_count": 19
+      },
+      "exploration": {
+        "total_trials": 201,
+        "successful_trials": 80,
+        "success_rate": 0.39800995024875624,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.0772365234924937,
+        "total_improvement": 5.1748470739970776
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": 0.024377961086816113,
+        "pattern_change": 0,
+        "current_severity": 0.4734993487963758
+      },
+      "latest_report": {
+        "severity": 0.4734993487963758,
+        "patterns": 7,
+        "hardest_classes": [
+          9,
+          3,
+          8,
+          5,
+          2
+        ]
+      }
+    },
+    {
+      "step": 7587,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 38228,
+        "total_corrected": 15317,
+        "correction_rate": 0.40067489798053785,
+        "avg_priority": 3.8879344789136483,
+        "max_priority": 9.565009980655848,
+        "avg_confidence": 0.9834856111637449,
+        "avg_loss": 2.450133554885286,
+        "num_confusion_pairs": 87,
+        "uncorrected_count": 1994,
+        "corrected_count": 6
+      },
+      "exploration": {
+        "total_trials": 225,
+        "successful_trials": 90,
+        "success_rate": 0.4,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.07382371259708916,
+        "total_improvement": 5.536778444781687
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": -0.006676823396951137,
+        "pattern_change": 0,
+        "current_severity": 0.47364346726219114
+      },
+      "latest_report": {
+        "severity": 0.47364346726219114,
+        "patterns": 7,
+        "hardest_classes": [
+          9,
+          5,
+          3,
+          8,
+          2
+        ]
+      }
+    },
+    {
+      "step": 8430,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 43287,
+        "total_corrected": 17035,
+        "correction_rate": 0.39353616559244115,
+        "avg_priority": 3.9544350521462284,
+        "max_priority": 8.822954669923385,
+        "avg_confidence": 0.984097238914047,
+        "avg_loss": 2.4516128538063495,
+        "num_confusion_pairs": 87,
+        "uncorrected_count": 2000,
+        "corrected_count": 0
+      },
+      "exploration": {
+        "total_trials": 252,
+        "successful_trials": 101,
+        "success_rate": 0.4007936507936508,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.07595215098438696,
+        "total_improvement": 6.379980682688505
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": 0.011840205053415653,
+        "pattern_change": 0,
+        "current_severity": 0.5050004032038973
+      },
+      "latest_report": {
+        "severity": 0.5050004032038973,
+        "patterns": 7,
+        "hardest_classes": [
+          3,
+          5,
+          9,
+          8,
+          4
+        ]
+      }
+    },
+    {
+      "step": 9273,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 48481,
+        "total_corrected": 18775,
+        "correction_rate": 0.3872651141684371,
+        "avg_priority": 4.029366511093266,
+        "max_priority": 9.0008102627032,
+        "avg_confidence": 0.9891479205885462,
+        "avg_loss": 2.4547561999200034,
+        "num_confusion_pairs": 85,
+        "uncorrected_count": 2000,
+        "corrected_count": 0
+      },
+      "exploration": {
+        "total_trials": 276,
+        "successful_trials": 106,
+        "success_rate": 0.38405797101449274,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.0769714165668385,
+        "total_improvement": 7.081370324149141
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": 0.000215689435583033,
+        "pattern_change": 0,
+        "current_severity": 0.5126929370883893
+      },
+      "latest_report": {
+        "severity": 0.5126929370883893,
+        "patterns": 7,
+        "hardest_classes": [
+          3,
+          9,
+          5,
+          8,
+          2
+        ]
+      }
+    },
+    {
+      "step": 10116,
+      "trial_weight": 0.05,
+      "memory": {
+        "total_stored": 2000,
+        "total_seen": 54172,
+        "total_corrected": 20587,
+        "correction_rate": 0.38003027394225797,
+        "avg_priority": 4.028640700919306,
+        "max_priority": 8.585537632008823,
+        "avg_confidence": 0.9876284765249372,
+        "avg_loss": 2.452145676589282,
+        "num_confusion_pairs": 87,
+        "uncorrected_count": 2000,
+        "corrected_count": 0
+      },
+      "exploration": {
+        "total_trials": 303,
+        "successful_trials": 112,
+        "success_rate": 0.3696369636963696,
+        "current_scale": 0.0199,
+        "avg_improvement": 0.07387551693948594,
+        "total_improvement": 7.461427210888079
+      },
+      "trend": {
+        "trend": "stable",
+        "severity_change": 1.4010087186822062e-05,
+        "pattern_change": 0,
+        "current_severity": 0.4873735013709466
+      },
+      "latest_report": {
+        "severity": 0.4873735013709466,
+        "patterns": 7,
+        "hardest_classes": [
+          9,
+          3,
+          8,
+          5,
+          7
+        ]
+      }
+    }
+  ],
+  "epoch_time": [
+    1.5717251300811768,
+    1.6289551258087158,
+    1.592628002166748,
+    2.0974550247192383,
+    3.260911703109741,
+    3.3572192192077637,
+    3.4090728759765625,
+    3.5382938385009766,
+    3.6574621200561523,
+    3.6754469871520996,
+    3.7720930576324463,
+    3.7793869972229004,
+    3.8768150806427,
+    3.9461371898651123,
+    4.1294262409210205
+  ],
+  "mistake_count": [
+    0,
+    0,
+    0,
+    2000,
+    2000,
+    2000,
+    2000,
+    2000,
+    2000,
+    1970,
+    2000,
+    2000,
+    2000,
+    2000,
+    2000
+  ],
+  "correction_rate": [
+    0,
+    0,
+    0,
+    0.4346973094170404,
+    0.4425873080581601,
+    0.439209726443769,
+    0.43894237109323486,
+    0.43011800923550536,
+    0.420014153103276,
+    0.41438260383163195,
+    0.40683704347305033,
+    0.40067489798053785,
+    0.39353616559244115,
+    0.3872651141684371,
+    0.38003027394225797
+  ]
+}

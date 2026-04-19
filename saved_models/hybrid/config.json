@@ -1,0 +1,39 @@
+{
+  "name": "TrialNet-hybrid",
+  "learning_mode": "hybrid",
+  "num_layers": 6,
+  "layer_configs": [
+    {
+      "type": "dense",
+      "input_size": 784,
+      "output_size": 256,
+      "activation": "relu"
+    },
+    {
+      "type": "dropout",
+      "rate": 0.3
+    },
+    {
+      "type": "dense",
+      "input_size": 256,
+      "output_size": 128,
+      "activation": "relu"
+    },
+    {
+      "type": "dropout",
+      "rate": 0.2
+    },
+    {
+      "type": "dense",
+      "input_size": 128,
+      "output_size": 64,
+      "activation": "relu"
+    },
+    {
+      "type": "dense",
+      "input_size": 64,
+      "output_size": 10,
+      "activation": "softmax"
+    }
+  ]
+}

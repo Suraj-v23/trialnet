@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrialNet — AI Training Dashboard</title>
+    <meta name="description" content="Real-time training dashboard for TrialNet, a novel AI model that learns from its mistakes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" stroke="url(#grad1)" stroke-width="2.5"/>
+                        <path d="M12 20 L18 26 L28 14" stroke="url(#grad1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M20 8 L20 14" stroke="url(#grad2)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                        <path d="M20 26 L20 32" stroke="url(#grad2)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                        <defs>
+                            <linearGradient id="grad1" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#6366f1"/>
+                                <stop offset="100%" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                            <linearGradient id="grad2" x1="0" y1="0" x2="0" y2="40">
+                                <stop offset="0%" stop-color="#06b6d4"/>
+                                <stop offset="100%" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div>
+                    <h1>TrialNet</h1>
+                    <p class="subtitle">AI That Learns From Mistakes</p>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-indicator" id="statusIndicator">
+                <span class="status-dot"></span>
+                <span id="statusText">Loading...</span>
+            </div>
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="hybrid" id="btnHybrid">Hybrid</button>
+                <button class="mode-btn" data-mode="traditional" id="btnTraditional">Traditional</button>
+                <button class="mode-btn" data-mode="trial" id="btnTrial">Trial Only</button>
+                <button class="mode-btn compare-btn" data-mode="compare" id="btnCompare">Compare All</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Cards -->
+    <section class="stats-row" id="statsRow">
+        <div class="stat-card" id="cardAccuracy">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-info">
+                <span class="stat-label">Test Accuracy</span>
+                <span class="stat-value" id="statAccuracy">—</span>
+            </div>
+            <div class="stat-trend" id="trendAccuracy"></div>
+        </div>
+        <div class="stat-card" id="cardLoss">
+            <div class="stat-icon">📉</div>
+            <div class="stat-info">
+                <span class="stat-label">Test Loss</span>
+                <span class="stat-value" id="statLoss">—</span>
+            </div>
+        </div>
+        <div class="stat-card glow-purple" id="cardMemory">
+            <div class="stat-icon">🧠</div>
+            <div class="stat-info">
+                <span class="stat-label">Mistake Memory</span>
+                <span class="stat-value" id="statMemory">—</span>
+            </div>
+        </div>
+        <div class="stat-card glow-cyan" id="cardCorrections">
+            <div class="stat-icon">✅</div>
+            <div class="stat-info">
+                <span class="stat-label">Corrections</span>
+                <span class="stat-value" id="statCorrections">—</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Grid -->
+    <section class="charts-grid">
+        <!-- Loss Chart -->
+        <div class="chart-card wide" id="lossChartCard">
+            <div class="chart-header">
+                <h3>📈 Training & Validation Loss</h3>
+                <span class="chart-badge">Live</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="lossChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Accuracy Chart -->
+        <div class="chart-card wide" id="accChartCard">
+            <div class="chart-header">
+                <h3>🎯 Accuracy Over Time</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="accuracyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Mistake Memory Chart -->
+        <div class="chart-card" id="memoryChartCard">
+            <div class="chart-header">
+                <h3>🧠 Error Memory Bank</h3>
+                <span class="chart-badge novel">Novel</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="memoryChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Learning Rate Chart -->
+        <div class="chart-card" id="lrChartCard">
+            <div class="chart-header">
+                <h3>⚡ Learning Rate</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="lrChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Comparison Chart (hidden by default) -->
+        <div class="chart-card full-width hidden" id="comparisonCard">
+            <div class="chart-header">
+                <h3>🔬 Mode Comparison — Test Accuracy</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trial Details Panel -->
+    <section class="trial-panel" id="trialPanel">
+        <div class="panel-header">
+            <h2>🔬 Try-and-Learn Engine Details</h2>
+            <span class="chart-badge novel">Novel Architecture</span>
+        </div>
+        <div class="trial-grid">
+            <div class="trial-stat">
+                <div class="trial-stat-label">Exploration Success Rate</div>
+                <div class="trial-stat-value" id="explorationRate">—</div>
+                <div class="trial-progress">
+                    <div class="trial-progress-bar" id="explorationBar" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="trial-stat">
+                <div class="trial-stat-label">Mistake Severity</div>
+                <div class="trial-stat-value" id="severityValue">—</div>
+                <div class="trial-progress">
+                    <div class="trial-progress-bar severity" id="severityBar" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="trial-stat">
+                <div class="trial-stat-label">Trial Weight (α)</div>
+                <div class="trial-stat-value" id="trialWeight">—</div>
+            </div>
+            <div class="trial-stat">
+                <div class="trial-stat-label">Patterns Found</div>
+                <div class="trial-stat-value" id="patternsFound">—</div>
+            </div>
+        </div>
+
+        <!-- Mistake Patterns Feed -->
+        <div class="patterns-feed" id="patternsFeed">
+            <h3>📋 Discovered Mistake Patterns</h3>
+            <div class="patterns-list" id="patternsList">
+                <div class="pattern-empty">Train the model to see mistake patterns...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>TrialNet v0.1 — Built from scratch with NumPy • No TensorFlow • No PyTorch</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
