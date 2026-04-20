@@ -102,6 +102,10 @@ class Tensor:
     def max_abs(self) -> float:
         return float(np.max(np.abs(self.data)))
 
+    def to_list(self) -> list:
+        """Convert tensor data to a Python list."""
+        return self.data.tolist()
+
     # ── Arithmetic ─────────────────────────────────────────────────────
 
     def __add__(self, other):

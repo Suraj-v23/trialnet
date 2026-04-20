@@ -8,6 +8,7 @@ Score >= 8 → log as positive example (future chosen pairs)
 Call judge_response() after each model answer to auto-populate memory.
 """
 
+from __future__ import annotations
 import json
 import re
 
@@ -50,6 +51,8 @@ def judge_response(
     )
     raw = generate(model, tokenizer, prompt=text, max_tokens=max_tokens, verbose=False)
 
+    # Strip <thinking> blocks before parsing (reasoning models prefix JSON with CoT)
+    raw = re.sub(r'<thinking>.*?</thinking>\s*', '', raw, flags=re.DOTALL).strip()
     # Extract JSON from response (model may add surrounding text)
     match = re.search(r'\{.*?\}', raw, re.DOTALL)
     if not match:

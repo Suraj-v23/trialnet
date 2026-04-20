@@ -6,6 +6,7 @@ Before answering, the chatbot retrieves the top-N most similar past mistakes
 and injects them into the system prompt so the model avoids repeating them.
 """
 
+from __future__ import annotations
 import json
 import os
 import uuid

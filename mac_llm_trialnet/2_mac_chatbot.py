@@ -10,13 +10,17 @@ Commands:
   quit                — exit
 """
 
+from __future__ import annotations
+import json
 import os
+import re
 from mlx_lm import load, generate
 from memory.chroma_bank import ChromaMemoryBank
 from memory.judge import judge_response
+from tools.executor import execute_tool, TOOL_SCHEMAS
 
-MODEL_ID     = "Qwen/Qwen2.5-1.5B-Instruct"
-ADAPTER_DIR  = "./mac_trialnet_v1_adapter"
+MODEL_ID     = "Qwen/Qwen2.5-3B-Instruct"
+ADAPTER_DIR  = "./mac_trialnet_3b_v4_adapter"
 LEGACY_JSONL = "./mac_mistakes_memory.jsonl"
 
 MAX_HISTORY_TURNS = 8   # sliding context window (32K ctx, 1.5B model)
@@ -34,7 +38,10 @@ BASE_SYSTEM = (
     "You are TrialNet, a continuously self-improving AI assistant running on Apple Silicon. "
     "You learn from your mistakes. Answer accurately and concisely.\n"
     "When writing code: always provide complete, runnable code. Never truncate or say 'rest omitted'. "
-    "Use Python unless another language is requested."
+    "Use Python unless another language is requested.\n"
+    "Tool use rules: use 'calculator' for arithmetic/algebra only. "
+    "Use 'python_exec' only when asked to RUN or TEST code — never when asked to WRITE or IMPLEMENT code. "
+    "For coding tasks (write/implement/create/fix/explain), respond with code directly — no tool calls."
 )
 
 
@@ -76,17 +83,52 @@ def build_system_prompt(user_prompt: str) -> str:
     return BASE_SYSTEM + ("\n\n" + injection if injection else "")
 
 
+_TOOL_CALL_RE = re.compile(r'<tool_call>\s*(\{.*?\})\s*</tool_call>', re.DOTALL)
+
+MAX_TOOL_ROUNDS = 3  # prevent infinite loops
+
+
+def _generate(messages: list[dict], max_tok: int) -> str:
+    prompt_text = tokenizer.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True,
+        tools=TOOL_SCHEMAS,
+    )
+    return generate(model, tokenizer, prompt=prompt_text, max_tokens=max_tok,
+                    verbose=False)
+
+
 def chat(user_prompt: str) -> str:
-    system  = build_system_prompt(user_prompt)
-    window  = conversation_history[-(MAX_HISTORY_TURNS * 2):]
+    system   = build_system_prompt(user_prompt)
+    window   = conversation_history[-(MAX_HISTORY_TURNS * 2):]
     messages = [{"role": "system", "content": system}] + window + [
         {"role": "user", "content": user_prompt}
     ]
-    prompt_text = tokenizer.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
-    )
     max_tok = 1200 if needs_more_tokens(user_prompt) else 500
-    return generate(model, tokenizer, prompt=prompt_text, max_tokens=max_tok, verbose=False)
+
+    for _ in range(MAX_TOOL_ROUNDS):
+        response = _generate(messages, max_tok)
+        match    = _TOOL_CALL_RE.search(response)
+        if not match:
+            return response  # no tool call — done
+
+        # Parse and execute the tool
+        try:
+            call = json.loads(match.group(1))
+            tool_name = call.get("name", "")
+            tool_args = call.get("arguments", {})
+        except json.JSONDecodeError:
+            return response  # malformed — return as-is
+
+        tool_result = execute_tool(tool_name, tool_args)
+        print(f"  [Tool: {tool_name}({tool_args}) → {tool_result}]")
+
+        # Append assistant tool-call turn + tool response, then loop
+        messages.append({"role": "assistant", "content": response})
+        messages.append({"role": "tool",      "content": tool_result, "name": tool_name})
+        max_tok = 300  # short follow-up for final answer
+
+    # Fallback: return last response if rounds exhausted
+    return response
 
 
 def run_judge(question: str, response: str) -> dict | None:
@@ -170,24 +212,28 @@ while True:
     # ── Normal turn ──
     print("\nTrialNet: ", end="", flush=True)
     response = chat(user_input)
-    print(response)
+    display = re.sub(r'<thinking>.*?</thinking>\s*', '', response, flags=re.DOTALL).strip()
+    print(display)
 
     # Accumulate history before judging
     conversation_history.append({"role": "user",      "content": user_input})
     conversation_history.append({"role": "assistant", "content": response})
     last_prompt   = user_input
-    last_response = response
+    last_response = display  # store stripped version for /correct and judge
 
     # Judge runs after response is visible to user
     if JUDGE_ENABLED:
         print("  ", end="", flush=True)
-        verdict = run_judge(user_input, response)
+        verdict = run_judge(user_input, display)
         if verdict:
             score  = verdict["score"]
             reason = verdict.get("reason", "")
-            if score <= JUDGE_BAD_THRESH:
+            if verdict.get("is_bad") and score <= JUDGE_BAD_THRESH:
                 print(f"[ Judge: {score}/10 ⚠  auto-logged — {reason} ]")
                 print(f"  Use /correct [answer] to provide the real fix.")
+            elif score <= JUDGE_BAD_THRESH:
+                print(f"[ Judge: {score}/10 ⚠  — {reason} ]")
+                print(f"  Use /correct [answer] if this is wrong.")
             elif score >= JUDGE_GOOD_THRESH:
                 print(f"[ Judge: {score}/10 ✓ ]")
             else:
